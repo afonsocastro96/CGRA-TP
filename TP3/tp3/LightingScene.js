@@ -25,6 +25,7 @@ LightingScene.prototype.init = function(application) {
 	// Scene elements
 	this.prism = new MyPrism(this, 8, 20);
 	this.cilinder = new MyCilinder(this,8,20);
+	this.lamp = new MyLamp(this,8,20);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -94,12 +95,12 @@ LightingScene.prototype.display = function() {
 	// ---- BEGIN Primitive drawing section
 
 	// Prism
-	this.prism.display();
+	//this.prism.display();
 
 	// Cilinder
 	this.pushMatrix();
-	this.translate(2.5,0,0);
-	this.cilinder.display();
+	//this.translate(5,0,0);
+	this.lamp.display();
 	this.popMatrix();
 
 	// ---- END Primitive drawing section

@@ -1,8 +1,8 @@
 /**
- * MyCilinder
+ * MyLamp
  * @constructor
  */
- function MyCilinder(scene, slices, stacks) {
+ function MyLamp(scene, slices, stacks) {
  	CGFobject.call(this,scene);
 	
 	this.slices=slices;
@@ -11,13 +11,16 @@
  	this.initBuffers();
  };
 
- MyCilinder.prototype = Object.create(CGFobject.prototype);
- MyCilinder.prototype.constructor = MyCilinder;
+ MyLamp.prototype = Object.create(CGFobject.prototype);
+ MyLamp.prototype.constructor = MyCilinder;
 
- MyCilinder.prototype.initBuffers = function() {
+ MyLamp.prototype.initBuffers = function() {
 	
  	var angulo = 2*Math.PI/this.slices;
- 	
+ 	var tetaDelta = Math.PI / this.stacks;
+ 	var fiDelta = 2*Math.PI / this.slices;
+ 	var raio = (Math.PI/2)/this.stacks;
+
 
 	this.vertices=[];
  	this.normals=[];
@@ -25,8 +28,8 @@
  	for(i = 0; i < this.stacks+1;i++){
  		for(j = 0; j < this.slices;j++){
  			/* As normais passam a ser iguais as coordenadas dos pontos */
- 			this.vertices.push(Math.cos(j*angulo),Math.sin(j*angulo),i/this.stacks);
- 			this.normals.push(Math.cos(j*angulo),Math.sin(j*angulo),0);
+ 			this.vertices.push(Math.cos(i*raio)*Math.cos(j*angulo), Math.sin(i*raio)*Math.sin(j*angulo), raio * i/this.stacks);
+ 			this.normals.push(Math.cos(j*fiDelta),Math.sin(j*fiDelta),0);
  		}
  	}
 
