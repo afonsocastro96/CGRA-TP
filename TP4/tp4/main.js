@@ -8,7 +8,8 @@ serialInclude([
 	'MyQuad.js',
 	'MyUnitCubeQuad.js',
 	'MyTable.js',
-	'Plane.js', 
+	'Plane.js',
+	'MyCilinder.js',
 
 	main=function() {
 		var app = new CGFapplication(document.body);

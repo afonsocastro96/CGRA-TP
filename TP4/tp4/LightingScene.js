@@ -33,8 +33,10 @@ LightingScene.prototype.init = function(application) {
 	this.table = new MyTable(this);
 	this.wall = new MyQuad(this,-0.5,1.5,-0.5,1.5);
 	this.floor = new MyQuad(this,0,10,0,12);
-	this.boardA = new Plane(this, BOARD_A_DIVISIONS);
-	this.boardB = new Plane(this, BOARD_B_DIVISIONS);
+	this.boardA = new Plane(this, BOARD_A_DIVISIONS, 0, 1, 0, 1);
+	this.boardB = new Plane(this, BOARD_B_DIVISIONS, 0, 1, 0, 1);
+	this.cilinder = new MyCilinder(this, 6, 20);
+	this.cilinder2 = new MyCilinder(this,6,20);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -75,6 +77,24 @@ LightingScene.prototype.init = function(application) {
 	this.floorappearance.setSpecular(0.7,0.7,0.7,1);
 	this.floorappearance.setShininess(120);
 
+	this.slideAppearance = new CGFappearance(this);
+	this.slideAppearance.loadTexture("/TP4/tp4/resources/images/slides.png");
+	this.slideAppearance.setDiffuse(0.8,0.8,0.8,1);
+	this.slideAppearance.setSpecular(0.3,0.3,0.3,1);
+	this.slideAppearance.setShininess(50);
+
+	this.boardAppearance = new CGFappearance(this);
+	this.boardAppearance.loadTexture("/TP4/tp4/resources/images/board.png");
+	this.boardAppearance.setDiffuse(0.2,0.2,0.2,1);
+	this.boardAppearance.setSpecular(0.5,0.5,0.5,1);
+	this.boardAppearance.setShininess(200);
+
+	this.pillarAppearance = new CGFappearance(this);
+	this.pillarAppearance.loadTexture("/TP4/tp4/resources/images/pillar.jpg");
+	this.pillarAppearance.setDiffuse(0.2,0.2,0.2,1);
+	this.pillarAppearance.setSpecular(0.5,0.5,0.5,1);
+	this.pillarAppearance.setShininess(200);
+	
 	
 
 };
@@ -209,7 +229,7 @@ LightingScene.prototype.display = function() {
 		this.translate(4, 4.5, 0.2);
 		this.scale(BOARD_WIDTH, BOARD_HEIGHT, 1);
 		
-		this.materialA.apply();
+		this.slideAppearance.apply();
 		this.boardA.display();
 	this.popMatrix();
 
@@ -218,8 +238,28 @@ LightingScene.prototype.display = function() {
 		this.translate(10.5, 4.5, 0.2);
 		this.scale(BOARD_WIDTH, BOARD_HEIGHT, 1);
 		
-		this.materialB.apply();
+		this.boardAppearance.apply();
 		this.boardB.display();
+	this.popMatrix();
+
+	// Cilindro 1
+	this.pushMatrix();
+		this.translate(14,0,14);
+		this.scale(1,5,1);	
+		this.rotate(-Math.PI/2,1,0,0);
+
+		this.pillarAppearance.apply();
+		this.cilinder.display();
+	this.popMatrix();
+
+	// Cilindro 2
+	this.pushMatrix();
+		this.translate(2,0,14);
+		this.scale(1,5,1);	
+		this.rotate(-Math.PI/2,1,0,0);
+
+		this.pillarAppearance.apply();
+		this.cilinder2.display();
 	this.popMatrix();
 
 	// ---- END Primitive drawing section
