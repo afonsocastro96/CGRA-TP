@@ -16,6 +16,12 @@ LightingScene.prototype.constructor = LightingScene;
 
 LightingScene.prototype.init = function(application) {
 	CGFscene.prototype.init.call(this, application);
+	this.light1 = true;
+	this.light2 = true;
+	this.light3 = true;
+	this.light4 = true;
+	this.clockMoving = true;
+	this.speed = 0;
 
 	this.initCameras();
 	this.initLights();
@@ -39,6 +45,7 @@ LightingScene.prototype.init = function(application) {
 	this.cilinder2 = new MyCilinder(this,6,20);
 	this.clock = new MyClock(this,12);
 	this.plane = new MyPaperPlane(this,14,4,8);
+	this.robot = new MyRobot(this,7,0,5,-Math.PI);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -150,9 +157,31 @@ LightingScene.prototype.initLights = function() {
 };
 
 LightingScene.prototype.updateLights = function() {
-	for (i = 0; i < this.lights.length; i++)
+	for (i = 0; i < this.lights.length; i++){
 		this.lights[i].update();
+	}
+
+	if(this.light1 == true)
+		this.lights[0].enable();
+	else
+		this.lights[0].disable();
+	if(this.light2 == true)
+		this.lights[1].enable();
+	else
+		this.lights[1].disable();
+	if(this.light3 == true)
+		this.lights[2].enable();
+	else
+		this.lights[2].disable();
+	if(this.light4 == true)
+		this.lights[3].enable();
+	else
+		this.lights[3].disable();
 }
+
+LightingScene.prototype.ControlPanel = function() {
+	console.log("Doing Something...");
+};
 
 LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
@@ -282,6 +311,12 @@ LightingScene.prototype.display = function() {
 		this.translate(7,7.3,0);
 		this.scale(0.6,0.6,0.2);
 		this.clock.display();
+	this.popMatrix();
+
+	// Robot
+
+	this.pushMatrix();
+		this.robot.display();
 	this.popMatrix();
 
 	// ---- END Primitive drawing section
