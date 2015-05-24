@@ -22,6 +22,10 @@ LightingScene.prototype.init = function(application) {
 	this.light4 = true;
 	this.clockMoving = true;
 	this.speed = 0;
+	
+	this.robotAppearances = [];
+	this.currRobotAppearance = 0;
+	this.robotAppearanceList = ['R2D2', 'Woody'];
 
 	this.initCameras();
 	this.initLights();
@@ -45,7 +49,7 @@ LightingScene.prototype.init = function(application) {
 	this.cilinder2 = new MyCilinder(this,6,20);
 	this.clock = new MyClock(this,12);
 	this.plane = new MyPaperPlane(this,14,4,8);
-	this.robot = new MyRobot(this,7,0,5,-Math.PI);
+	this.robot = new MyRobot(this,0,0,0,0);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);

@@ -36,8 +36,10 @@ MyInterface.prototype.init = function(application) {
 	
 	var group=this.gui.addFolder("Lights");
 	var group2=this.gui.addFolder("Clock");
+	var group3=this.gui.addFolder("Texture");
 	group.open();
 	group2.open();
+	group3.open();
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
@@ -50,6 +52,10 @@ MyInterface.prototype.init = function(application) {
 	//add the clock button
 
 	group2.add(this.scene, 'clockMoving')
+
+	//add the textures dropdown menu
+
+	group3.add(this.scene, 'currRobotAppearance', this.scene.robotAppearanceList);
 	
 	// add a slider
 	// must be a numeric variable of the scene, initialized in scene.init e.g.
