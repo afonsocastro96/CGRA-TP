@@ -117,8 +117,8 @@ MyRobot.prototype.moveRobot = function (direction){
 	switch(direction){
 		case 0:
 			console.log(this.scene.speed);
-			this.x+= (1 + this.scene.speed / 100) * (Math.sin(this.angulo));
-			this.z+= (1 + this.scene.speed / 100) * (Math.cos(this.angulo));
+			this.x+= (1 + this.scene.speed / 10) * (Math.sin(this.angulo));
+			this.z+= (1 + this.scene.speed / 10) * (Math.cos(this.angulo));
 			break;
 		case 1:
 			console.log(this.scene.speed);
