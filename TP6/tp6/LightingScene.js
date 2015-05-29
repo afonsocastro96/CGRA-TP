@@ -49,7 +49,8 @@ LightingScene.prototype.init = function(application) {
 	this.cilinder2 = new MyCilinder(this,6,20);
 	this.clock = new MyClock(this,12);
 	this.plane = new MyPaperPlane(this,14,4,8);
-	this.robot = new MyRobot(this,0,0,0,0);
+	this.robot = new MyRobot(this,5,0,5,0);
+	this.landscape = new MyQuad(this,0,1,0,1);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -107,6 +108,12 @@ LightingScene.prototype.init = function(application) {
 	this.pillarAppearance.setDiffuse(0.2,0.2,0.2,1);
 	this.pillarAppearance.setSpecular(0.5,0.5,0.5,1);
 	this.pillarAppearance.setShininess(200);
+
+	this.landscapeT = new CGFappearance(this);
+	this.landscapeT.loadTexture("resources/images/landscape.jpg");
+	this.landscapeT.setDiffuse(0.2,0.2,0.2,1);
+	this.landscapeT.setSpecular(0.5,0.5,0.5,1);
+	this.landscapeT.setShininess(200);
 
 	this.paperPlane = new CGFappearance(this,14,4);
 	this.paperPlane.setDiffuse(0.0,0.0,0.2,1);
@@ -322,6 +329,16 @@ LightingScene.prototype.display = function() {
 	this.pushMatrix();
 		this.robot.display();
 	this.popMatrix();
+
+	//Plano de paisagem
+	this.pushMatrix();
+		this.translate(-10,5,5);
+		this.rotate(Math.PI/2,0,1,0);
+		this.scale(32,18,1);
+		this.landscapeT.apply();
+		this.landscape.display();
+	this.popMatrix();
+
 
 	// ---- END Primitive drawing section
 
