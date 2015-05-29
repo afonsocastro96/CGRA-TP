@@ -10,6 +10,11 @@ function MyRobot(scene,x,y,z,angulo) {
 	this.y = y;
 	this.z = z;
 	this.angulo = angulo;
+	
+	this.rotation=0;
+	this.position=[0,0];
+	this.speed=0;
+	
 	this.body = new MyCilinder(this.scene,20,20);
 	this.circle = new MyCircle(this.scene,20);
 	this.wheel1 = new MyCilinder(this.scene,20,20);
@@ -83,6 +88,27 @@ MyRobot.prototype.initBuffers = function () {
 	this.initGLBuffers();
 };
 
+MyRobot.prototype.addRotation = function(value)
+{
+    this.rotation += value;
+    if (this.rotation >= 2*Math.PI) this.rotation -= 2*Math.PI;
+    else if (this.rotation <= 0) this.rotation += 2*Math.PI;
+};
+
+MyRobot.prototype.rightRot = function()
+{
+	this.rotation -= 2;
+	this.wheel1.addRotation(0.05);
+	this.wheel2.addRotation(-0.05)
+};
+
+MyRobot.prototype.leftRot = function()
+{
+	this.rotation += 2;
+	this.wheel1.addRotation(-0.05);
+	this.wheel2.addRotation(0.05);
+};
+
 MyRobot.prototype.moveRobot = function (direction){
 	switch(direction){
 		case 0:
@@ -110,7 +136,18 @@ MyRobot.prototype.display = function () {
 	this.scene.pushMatrix();
 		this.scene.translate(this.x,this.y+0.3,this.z);
 		this.scene.rotate(this.angulo,0,1,0);
+		
+		this.position[0] += this.speed*Math.sin(this.rotation*degToRad);
+		this.position[1] += this.speed*Math.cos(this.rotation*degToRad);
+		this.speed *=0.90;
+		
+		this.scene.translate(this.position[0],0,this.position[1]);
+		this.scene.rotate(this.rotation*degToRad,0,1,0);
 
+		this.addRotation(this.speed);
+		this.addRotation(this.speed);
+		
+	
 	/* Corpo */
 	this.scene.pushMatrix();
 		this.scene.rotate(-Math.PI/2,1,0,0);
@@ -131,9 +168,9 @@ MyRobot.prototype.display = function () {
 	/* Roda 1 */
 
 	this.scene.pushMatrix();
-		this.scene.translate(1,0.1,0);
+		this.scene.translate(1,0.5,0);
 		this.scene.rotate(Math.PI/2,0,1,0);
-		this.scene.scale(0.5,0.5,0.5);
+		this.scene.scale(0.8,0.8,0.5);
 		this.wheel.apply();
 		this.wheel1.display();
 		this.scene.translate(0,0,1);
@@ -144,9 +181,9 @@ MyRobot.prototype.display = function () {
 	/* Roda 2 */
 
 	this.scene.pushMatrix();
-		this.scene.translate(-1,0.1,0);
+		this.scene.translate(-1,0.5,0);
 		this.scene.rotate(-Math.PI/2,0,1,0);
-		this.scene.scale(0.5,0.5,0.5);
+		this.scene.scale(0.8,0.8,0.5);
 		this.wheel.apply();
 		this.wheel2.display();
 		this.scene.translate(0,0,1);
@@ -170,7 +207,7 @@ MyRobot.prototype.display = function () {
 	/* Braco 1 */
 
 	this.scene.pushMatrix();
-		this.scene.translate(-0.9,2,0);
+		this.scene.translate(-0.9,2.6,0);
 		this.scene.rotate(-Math.PI/2,0,1,0);
 		this.scene.scale(0.5,1,0.5)
 		this.arm1.display();
@@ -179,7 +216,7 @@ MyRobot.prototype.display = function () {
 	/* Circulo do braço 1*/
 
 	this.scene.pushMatrix();
-		this.scene.translate(-1.4,2,0);
+		this.scene.translate(-1.4,2.6,0);
 		this.scene.rotate(-Math.PI/2,0,1,0);
 		this.scene.scale(0.5,1,0.5)
 		this.circle3.display();
@@ -188,7 +225,7 @@ MyRobot.prototype.display = function () {
 	/* Braco 2 */
 
 	this.scene.pushMatrix();
-		this.scene.translate(1.5,2,0);
+		this.scene.translate(1.5,2.6,0);
 		this.scene.rotate(-Math.PI/2,0,1,0);
 		this.scene.scale(0.5,1,0.5)
 		this.arm2.display();
@@ -197,7 +234,7 @@ MyRobot.prototype.display = function () {
 	/* Circulo do braço 2 */
 
 	this.scene.pushMatrix();
-		this.scene.translate(1.5,2,0);
+		this.scene.translate(1.5,2.6,0);
 		this.scene.rotate(Math.PI/2,0,1,0);
 		this.scene.scale(0.5,1,0.5)
 		this.circle4.display();

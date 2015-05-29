@@ -41,7 +41,7 @@ LightingScene.prototype.init = function(application) {
 
 	// Scene elements
 	this.table = new MyTable(this);
-	this.wall = new MyQuad(this,-0.5,1.5,-0.5,1.5);
+	this.wall = new MyQuad(this,0,1,-0.9,0.1);
 	this.floor = new MyQuad(this,0,10,0,12);
 	this.boardA = new Plane(this, BOARD_A_DIVISIONS, 0, 1, 0, 1);
 	this.boardB = new Plane(this, BOARD_B_DIVISIONS, 0, 1, 0, 1);
@@ -51,6 +51,15 @@ LightingScene.prototype.init = function(application) {
 	this.plane = new MyPaperPlane(this,14,4,8);
 	this.robot = new MyRobot(this,5,0,5,0);
 	this.landscape = new MyQuad(this,0,1,0,1);
+	//Window Wall
+	this.horizontalUp = new MyQuad(this,0.1,0.9,-0.1,0.04);
+	this.horizontalDown = new MyQuad(this,0.1,0.9,0.97,1.06);
+	this.verticalLeft = new MyQuad(this,-0.2,0.04,0.1,0.9);
+	this.verticalRight = new MyQuad(this,0.96,1.2,0.1,0.9);
+	this.cornerUpRight = new MyQuad(this,0.96,1.2,-0.1,0.04);
+	this.cornerUpLeft = new MyQuad(this,-0.2,0.04,-0.1,0.04);
+	this.cornerDownLeft = new MyQuad(this,-0.2,0.04,0.97,1.06);
+	this.cornerDownRight = new MyQuad(this,0.96,1.2,0.97,1.06);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -111,9 +120,10 @@ LightingScene.prototype.init = function(application) {
 
 	this.landscapeT = new CGFappearance(this);
 	this.landscapeT.loadTexture("resources/images/landscape.jpg");
-	this.landscapeT.setDiffuse(0.2,0.2,0.2,1);
-	this.landscapeT.setSpecular(0.5,0.5,0.5,1);
-	this.landscapeT.setShininess(200);
+	this.landscapeT.setDiffuse(0.5,0.5,0.5,1);
+	this.landscapeT.setSpecular(0.8,0.8,0.8,1);
+	this.landscapeT.setAmbient(0.5,0.5,0.5,1);
+	this.landscapeT.setShininess(1000);
 
 	this.paperPlane = new CGFappearance(this,14,4);
 	this.paperPlane.setDiffuse(0.0,0.0,0.2,1);
@@ -243,13 +253,92 @@ LightingScene.prototype.display = function() {
 	this.popMatrix();
 
 	// Left Wall
-	this.pushMatrix();
+	/*this.pushMatrix();
 		this.windowAppearance.apply();
 		this.translate(0, 4, 7.5);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(15, 8, 0.2);		
 		this.wall.display();
+	this.popMatrix();*/
+
+	/* LEFT WALL */
+
+	// Upper part
+	this.pushMatrix();
+		this.windowAppearance.apply();
+		this.translate(0,7,7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(7.5,2,0.2);
+		this.horizontalUp.display();
 	this.popMatrix();
+
+	// Lower part
+	this.pushMatrix();
+		this.windowAppearance.apply();
+		this.translate(0,1,7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(7.5,2,0.2);
+		this.horizontalDown.display();
+	this.popMatrix();
+
+	// Right part
+
+	this.pushMatrix();
+		this.windowAppearance.apply();
+		this.translate(0,4,1.9);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(3.75,4,0.2);
+		this.verticalRight.display();
+	this.popMatrix();
+
+	// Left part
+
+	this.pushMatrix();
+		this.windowAppearance.apply();
+		this.translate(0,4,13.1);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(3.75,4,0.2);
+		this.verticalLeft.display();
+	this.popMatrix();
+
+	// Right-Down Corner
+
+	this.pushMatrix();
+		this.windowAppearance.apply();
+		this.translate(0,1,1.875);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(3.75,2,0.2);
+		this.cornerDownRight.display();
+	this.popMatrix();
+
+	// Right-Up Corner
+
+	this.pushMatrix();
+		this.windowAppearance.apply();
+		this.translate(0,7,1.875);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(3.75,2,0.2);
+		this.cornerUpRight.display();
+	this.popMatrix();
+
+	// Left-Down Corner
+
+	this.pushMatrix();
+		this.translate(0,1,13.125);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(3.75,2,0.2);
+		this.cornerDownLeft.display();
+	this.popMatrix();
+
+	// Left-Up Corner
+
+	this.pushMatrix();
+		this.translate(0,7,13.125);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(3.75,2,0.2);
+		this.cornerUpLeft.display();
+	this.popMatrix();
+
 
 	// Plane Wall
 	this.pushMatrix();
@@ -296,7 +385,6 @@ LightingScene.prototype.display = function() {
 		this.translate(14,0,14);
 		this.scale(1,5,1);	
 		this.rotate(-Math.PI/2,1,0,0);
-
 		this.pillarAppearance.apply();
 		this.cilinder.display();
 	this.popMatrix();
