@@ -22,6 +22,7 @@ LightingScene.prototype.init = function(application) {
 	this.light4 = true;
 	this.clockMoving = true;
 	this.speed = 0;
+	this.windowOpen = true;
 	
 	this.robotAppearances = [];
 	this.currRobotAppearance = 0;
@@ -51,6 +52,8 @@ LightingScene.prototype.init = function(application) {
 	this.plane = new MyPaperPlane(this,14,4,8);
 	this.robot = new MyRobot(this,5,0,5,0);
 	this.landscape = new MyQuad(this,0,1,0,1);
+	this.outerFloor = new MyQuad(this,0,25,0,25);
+
 	//Window Wall
 	this.horizontalUp = new MyQuad(this,0.1,0.9,-0.1,0.04);
 	this.horizontalDown = new MyQuad(this,0.1,0.9,0.97,1.06);
@@ -60,6 +63,11 @@ LightingScene.prototype.init = function(application) {
 	this.cornerUpLeft = new MyQuad(this,-0.2,0.04,-0.1,0.04);
 	this.cornerDownLeft = new MyQuad(this,-0.2,0.04,0.97,1.06);
 	this.cornerDownRight = new MyQuad(this,0.96,1.2,0.97,1.06);
+
+	//Window
+	this.window = new MyQuad(this,0.05,0.95,0.1,0.9);
+	this.windowOpened1 = new MyQuad(this,0,1,0,1);
+	this.windowOpened2 = new MyQuad(this,0,1,0,1);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -138,6 +146,33 @@ LightingScene.prototype.initCameras = function() {
 	this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
 };
 
+LightingScene.prototype.displayWindow = function() {
+	if(this.windowOpen == false){
+		this.pushMatrix();
+			this.translate(0,4,7.5);
+			this.scale(0.2,4,7.5);
+			this.rotate(Math.PI/2,0,1,0);
+			this.windowAppearance.apply();
+			this.window.display();
+		this.popMatrix();
+	} else {
+	this.pushMatrix();
+		this.translate(-2.5,4,11.2);
+		this.rotate(Math.PI,0,1,0);
+		this.scale(5,4,0.2);
+		this.windowAppearance.apply();
+		this.windowOpened1.display();
+	this.popMatrix();
+
+	this.pushMatrix();
+		this.translate(-2.5,4,3.8);
+		this.scale(5,4,0.2);
+		this.windowAppearance.apply();
+		this.windowOpened1.display();
+	this.popMatrix();
+	}
+}
+
 LightingScene.prototype.initLights = function() {
 	this.setGlobalAmbientLight(0.0,0.0,0.0, 1.0);
 
@@ -147,7 +182,7 @@ LightingScene.prototype.initLights = function() {
 	this.lights[0].setPosition(4, 6, 1, 1);
 	this.lights[1].setPosition(10.5, 6.0, 1.0, 1.0);
 	this.lights[2].setPosition(10.5, 6.0, 5.0, 1.0);
-	this.lights[3].setPosition(4, 6.0, 5.0, 1.0);
+	this.lights[3].setPosition(-4, 6.0, 5.0, 1.0);
 
 	this.lights[0].setAmbient(0, 0, 0, 1);
 	this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -168,10 +203,10 @@ LightingScene.prototype.initLights = function() {
 
 	this.lights[3].setAmbient(0, 0, 0, 1);
 	this.lights[3].setDiffuse(1.0, 1.0, 1.0, 1.0);
-	this.lights[3].setSpecular(1.0, 1.0, 0, 1.0);
+	this.lights[3].setSpecular(1.0, 1.0, 1.0, 1.0);
 	this.lights[3].setConstantAttenuation(0);
-	this.lights[3].setLinearAttenuation(0);
-	this.lights[3].setQuadraticAttenuation(0.2);
+	this.lights[3].setLinearAttenuation(0.2);
+	this.lights[3].setQuadraticAttenuation(0);
 	this.lights[3].enable();
 
 	this.shader.unbind();
@@ -207,6 +242,7 @@ LightingScene.prototype.ControlPanel = function() {
 LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 	this.plane.update(currTime);
+	this.robot.update(currTime);
 }
 
 LightingScene.prototype.display = function() {
@@ -252,15 +288,6 @@ LightingScene.prototype.display = function() {
 		this.floor.display();
 	this.popMatrix();
 
-	// Left Wall
-	/*this.pushMatrix();
-		this.windowAppearance.apply();
-		this.translate(0, 4, 7.5);
-		this.rotate(90 * degToRad, 0, 1, 0);
-		this.scale(15, 8, 0.2);		
-		this.wall.display();
-	this.popMatrix();*/
-
 	/* LEFT WALL */
 
 	// Upper part
@@ -274,7 +301,7 @@ LightingScene.prototype.display = function() {
 
 	// Lower part
 	this.pushMatrix();
-		this.windowAppearance.apply();
+		//this.windowAppearance.apply();
 		this.translate(0,1,7.5);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(7.5,2,0.2);
@@ -284,7 +311,7 @@ LightingScene.prototype.display = function() {
 	// Right part
 
 	this.pushMatrix();
-		this.windowAppearance.apply();
+		//this.windowAppearance.apply();
 		this.translate(0,4,1.9);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(3.75,4,0.2);
@@ -294,7 +321,7 @@ LightingScene.prototype.display = function() {
 	// Left part
 
 	this.pushMatrix();
-		this.windowAppearance.apply();
+		//this.windowAppearance.apply();
 		this.translate(0,4,13.1);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(3.75,4,0.2);
@@ -304,7 +331,7 @@ LightingScene.prototype.display = function() {
 	// Right-Down Corner
 
 	this.pushMatrix();
-		this.windowAppearance.apply();
+		//this.windowAppearance.apply();
 		this.translate(0,1,1.875);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(3.75,2,0.2);
@@ -314,7 +341,7 @@ LightingScene.prototype.display = function() {
 	// Right-Up Corner
 
 	this.pushMatrix();
-		this.windowAppearance.apply();
+		//this.windowAppearance.apply();
 		this.translate(0,7,1.875);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(3.75,2,0.2);
@@ -342,6 +369,7 @@ LightingScene.prototype.display = function() {
 
 	// Plane Wall
 	this.pushMatrix();
+		this.materialDefault.apply();
 		this.translate(7.5, 4, 0);
 		this.scale(15, 8, 0.2);
 		this.walls.apply();
@@ -417,6 +445,10 @@ LightingScene.prototype.display = function() {
 	this.pushMatrix();
 		this.robot.display();
 	this.popMatrix();
+
+	// Janela
+
+	this.displayWindow();
 
 	//Plano de paisagem
 	this.pushMatrix();

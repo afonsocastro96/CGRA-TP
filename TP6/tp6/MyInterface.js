@@ -37,9 +37,11 @@ MyInterface.prototype.init = function(application) {
 	var group=this.gui.addFolder("Lights");
 	var group2=this.gui.addFolder("Clock");
 	var group3=this.gui.addFolder("Texture");
+	var group4=this.gui.addFolder("Window");
 	group.open();
 	group2.open();
 	group3.open();
+	group4.open();
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
@@ -56,6 +58,10 @@ MyInterface.prototype.init = function(application) {
 	//add the textures dropdown menu
 
 	group3.add(this.scene, 'currRobotAppearance', this.scene.robotAppearanceList);
+
+	//add the window open/close menu
+
+	group4.add(this.scene, 'windowOpen')
 	
 	// add a slider
 	// must be a numeric variable of the scene, initialized in scene.init e.g.
@@ -97,5 +103,8 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case (83):	
 			this.scene.robot.moveRobot(1);
 			break;
+		case (32):	
+			this.scene.robot.jump();
+			break;	
 	};
 };

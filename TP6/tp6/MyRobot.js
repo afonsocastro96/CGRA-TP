@@ -14,6 +14,9 @@ function MyRobot(scene,x,y,z,angulo) {
 	this.rotation=0;
 	this.position=[0,0];
 	this.speed=0;
+	this.time=0;
+	this.robotState = 0;
+	this.jumpSpeed = 0.4;
 	
 	this.body = new MyCilinder(this.scene,20,20);
 	this.circle = new MyCircle(this.scene,20);
@@ -110,6 +113,7 @@ MyRobot.prototype.leftRot = function()
 };
 
 MyRobot.prototype.moveRobot = function (direction){
+	if(this.robotState == 0){
 	switch(direction){
 		case 0:
 			console.log(this.scene.speed);
@@ -128,7 +132,25 @@ MyRobot.prototype.moveRobot = function (direction){
 			this.angulo-=Math.PI/6;
 			break;
 	}
-	this.scene.translate()
+	}
+	this.scene.translate();
+}
+
+MyRobot.prototype.update = function (currTime) {
+    this.time++;
+    if(this.robotState == 1){
+    	this.y+=this.jumpSpeed;
+    	this.jumpSpeed-=0.05;
+    	if (this.y <= 0.1){
+    		this.robotState = 0;
+    		this.jumpSpeed = 0.4;
+    	}
+    }
+}
+
+MyRobot.prototype.jump = function () {
+	if(this.robotState == 0)
+		this.robotState = 1;
 }
 
 MyRobot.prototype.display = function () {
